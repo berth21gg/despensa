@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:pmsn2024/screens/dashboard_screen.dart';
+import 'package:pmsn2024/screens/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,22 +11,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool isLoading = false;
 
   final txtUser = TextFormField(
     keyboardType: TextInputType.emailAddress,
-    decoration: const InputDecoration(
-      border: OutlineInputBorder()
-    ),
+    decoration: const InputDecoration(border: OutlineInputBorder()),
   );
 
   final pwdUser = TextFormField(
     keyboardType: TextInputType.text,
     obscureText: true,
-    decoration: const InputDecoration(
-      border: OutlineInputBorder()
-    ),
+    decoration: const InputDecoration(border: OutlineInputBorder()),
   );
 
   @override
@@ -34,11 +30,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-          image: DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage('images/fondo.jpeg')
-          )
-        ),
+            image: DecorationImage(
+                fit: BoxFit.cover, image: AssetImage('images/fondo.jpeg'))),
         child: Stack(
           alignment: Alignment.center,
           children: [
@@ -49,77 +42,75 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20)
-                  ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20)),
                   height: 155,
-                  width: MediaQuery.of(context).size.width*.9,
+                  width: MediaQuery.of(context).size.width * .9,
                   child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        txtUser,
-                        const SizedBox(height: 10,),
-                        pwdUser
-                        
-                      ],
-                    ),
+                    shrinkWrap: true,
+                    children: [
+                      txtUser,
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      pwdUser
+                    ],
+                  ),
                 ),
               ),
             ),
             Image.asset('images/logo_text.png'),
             Positioned(
-              bottom: 50,
-              child: Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width*.9,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    SignInButton(
-                      Buttons.Email, 
-                      onPressed: (){
+                bottom: 50,
+                child: Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width * .9,
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      SignInButton(Buttons.Email, onPressed: () {
                         setState(() {
                           isLoading = !isLoading;
                         });
-                        Future.delayed(
-                          new Duration(milliseconds: 5000),
-                          (){
-                            /*Navigator.push(
+                        Future.delayed(new Duration(milliseconds: 5000), () {
+                          /*Navigator.push(
                               context, 
                               MaterialPageRoute(builder: (context) => new DashboardScreen(),)
                             );*/
-                            Navigator.pushNamed(context, "/dash").then((value){
-                              setState(() {
-                                isLoading = !isLoading;
-                              });
+                          Navigator.pushNamed(context, "/dash").then((value) {
+                            setState(() {
+                              isLoading = !isLoading;
                             });
-                          }
-                        );
-                      }
-                    ),
-                    SignInButton(
-                      Buttons.Google, 
-                      onPressed: (){}
-                    ),
-                    SignInButton(
-                      Buttons.Facebook, 
-                      onPressed: (){}
-                    ),
-                    SignInButton(
-                      Buttons.GitHub, 
-                      onPressed: (){}
-                    ),
-                  ],
-                ),
-              )
-            ),
-            isLoading ? const Positioned(
-              top: 260,
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              )
-            )
-            : Container()
+                          });
+                        });
+                      }),
+                      //SignInButton(Buttons.Google, onPressed: () {}),
+                      //SignInButton(Buttons.Facebook, onPressed: () {}),
+                      //SignInButton(Buttons.GitHub, onPressed: () {}),
+                      ElevatedButton(
+                        onPressed: () {
+                          //Navegar hacia la pantalla de registro
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => RegisterScreen()),
+                          );
+                        },
+                        child: const Text(
+                          'REGISTER',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      )
+                    ],
+                  ),
+                )),
+            isLoading
+                ? const Positioned(
+                    top: 260,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                    ))
+                : Container()
           ],
         ),
       ),

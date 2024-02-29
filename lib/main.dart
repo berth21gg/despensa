@@ -5,7 +5,7 @@ import 'package:pmsn2024/screens/splash_screen.dart';
 import 'package:pmsn2024/settings/app_value_notifier.dart';
 import 'package:pmsn2024/settings/theme.dart';
 
-void main() => runApp( MyApp());
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,21 +13,21 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: AppValueNotifier.banTheme,
-      builder: (context, value, child) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          theme: value 
-            ? ThemeApp.darkTheme(context) 
-            : ThemeApp.lightTheme(context),
-          home: SplashScreen(),
-          routes: {
-            "/dash" : (BuildContext context) => DashboardScreen(),
-            "/despensa" : (BuildContext context) => DespensaScreen(),
-          },
-        );
-      }
-    );
+        valueListenable: AppValueNotifier.banTheme,
+        builder: (context, value, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: value
+                ? ThemeApp.darkTheme(context)
+                : ThemeApp.lightTheme(context),
+            home: SplashScreen(),
+            routes: {
+              "/dash": (BuildContext context) => DashboardScreen(),
+              "/despensa": (BuildContext context) => DespensaScreen(),
+              //Agregar ruta de register
+            },
+          );
+        });
   }
 }
 
