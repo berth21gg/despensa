@@ -1,3 +1,4 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pmsn2024/database/products_database.dart';
@@ -84,7 +85,38 @@ class _DespensaScreenState extends State<DespensaScreen> {
                     showModal(context, producto);
                   },
                   icon: Icon(Icons.edit)),
-              IconButton(onPressed: () {}, icon: Icon(Icons.delete))
+              IconButton(
+                  onPressed: () async {
+                    ArtDialogResponse response = await ArtSweetAlert.show(
+                        barrierDismissible: false,
+                        context: context,
+                        artDialogArgs: ArtDialogArgs(
+                            denyButtonText: "Cancel",
+                            title: "Are you sure?",
+                            text: "You won't be able to revert this!",
+                            confirmButtonText: "Yes, delete it",
+                            type: ArtSweetAlertType.warning));
+
+                    if (response == null) {
+                      return;
+                    }
+
+                    if (response.isTapConfirmButton) {
+                      productsDB!.ELIMINAR(producto.idProducto!).then((value) {
+                        if (value > 0) {
+                          ArtSweetAlert.show(
+                              context: context,
+                              artDialogArgs: ArtDialogArgs(
+                                  type: ArtSweetAlertType.success,
+                                  title: "Deleted!"));
+                          AppValueNotifier.banProducts.value =
+                              !AppValueNotifier.banProducts.value;
+                        }
+                      });
+                      return;
+                    }
+                  },
+                  icon: Icon(Icons.delete))
             ],
           )
         ],

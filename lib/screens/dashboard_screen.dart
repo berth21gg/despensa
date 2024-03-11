@@ -8,15 +8,16 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dashboard'),),
+      appBar: AppBar(
+        title: Text('Dashboard'),
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
             UserAccountsDrawerHeader(
               currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage('https://i.pravatar.cc/150')
-              ),
-              accountName: Text('Rubensin Torres Frias'), 
+                  backgroundImage: NetworkImage('https://i.pravatar.cc/150')),
+              accountName: Text('Rubensin Torres Frias'),
               accountEmail: Text('ruben.torres@itcelaya.edu.mx'),
             ),
             ListTile(
@@ -25,7 +26,7 @@ class DashboardScreen extends StatelessWidget {
               subtitle: Text('Aqui iria la descripcion si tuviera una'),
               trailing: Icon(Icons.chevron_right),
             ),
-             ListTile(
+            ListTile(
               leading: Icon(Icons.shop),
               title: Text('Mi despensa'),
               subtitle: Text('Relacion de productos que no voy a usar'),
@@ -33,11 +34,18 @@ class DashboardScreen extends StatelessWidget {
               onTap: () => Navigator.pushNamed(context, '/despensa'),
             ),
             ListTile(
+              leading: Icon(Icons.shop),
+              title: Text('Movies App'),
+              subtitle: Text('Consulta de peliculas populares'),
+              trailing: Icon(Icons.chevron_right),
+              onTap: () => Navigator.pushNamed(context, '/movies'),
+            ),
+            ListTile(
               leading: Icon(Icons.close),
               title: Text('Salir'),
               subtitle: Text('Hasta luego'),
               trailing: Icon(Icons.chevron_right),
-              onTap: (){
+              onTap: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
               },
