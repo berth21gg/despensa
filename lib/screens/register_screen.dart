@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pmsn2024/screens/login_screen.dart';
+import 'package:pmsn2024/services/email_auth_firebase.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -16,6 +17,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // instanciar clase firebase
+  final auth_firebase = EmailAuthFirebase();
 
   //Método para seleccionar una imagen desde la galeria
   Future _pickImageFromGallery() async {
@@ -57,6 +61,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
+    // registrar en firebase
+    // checar minimo de caracteres de contraseña >= 6
+    auth_firebase
+        .signUpUser(
+            name: _nameController.text,
+            password: _passwordController.text,
+            email: _emailController.text)
+        .then((value) {
+      if (value) {
+        // Mostrar un mensaje
+        _showErrorMessage('Your account has been created');
+      }
+    });
+
     //Limpiar los campos después de un registro
     _nameController.clear();
     _emailController.clear();
@@ -65,8 +83,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _avatarImage = null;
     });
-    // Mostrar un mensaje
-    _showErrorMessage('Your account has been created');
   }
 
   // Método para mostrar un mensaje de error
