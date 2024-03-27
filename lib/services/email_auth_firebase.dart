@@ -26,7 +26,7 @@ class EmailAuthFirebase {
         await auth.signInWithEmailAndPassword(email: email, password: password);
     if (userCredential.user != null) {
       if (userCredential.user!.emailVerified) {
-        return band;
+        band = true;
       }
     }
     return band;

@@ -1,29 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:pmsn2024/model/funtion.dart';
 import 'package:pmsn2024/model/popular_model.dart';
-import 'package:pmsn2024/network/api_popular.dart';
 
-class PopularMoviesScreen extends StatefulWidget {
-  const PopularMoviesScreen({super.key});
+class FavoriteMoviesScreen extends StatefulWidget {
+  const FavoriteMoviesScreen({super.key});
 
   @override
-  State<PopularMoviesScreen> createState() => _PopularMoviesScreenState();
+  State<FavoriteMoviesScreen> createState() => _FavoriteMoviesScreenState();
 }
 
-class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
-  ApiPopular? apiPopular;
+class _FavoriteMoviesScreenState extends State<FavoriteMoviesScreen> {
+  late Future<List<PopularModel>> _getFavorites;
 
   @override
   void initState() {
     // TODO: implement initState
-    apiPopular = ApiPopular();
+    super.initState();
+    _getFavorites = getFavoriteMovies();
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: apiPopular?.getPopularMovie(),
-        builder: (context, AsyncSnapshot<List<PopularModel>?> snapshot) {
+        future: _getFavorites,
+        builder: (context, snapshot) {
           if (snapshot.hasData) {
             return GridView.builder(
               itemCount: snapshot.data!.length,
@@ -34,7 +34,13 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () => Navigator.pushNamed(context, "/detail",
-                      arguments: snapshot.data![index]),
+                          arguments: snapshot.data![index])
+                      .then((_) {
+                    setState(() {
+                      _getFavorites =
+                          getFavoriteMovies(); // Actualizar el estado
+                    });
+                  }),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Hero(
@@ -42,7 +48,8 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
                       child: FadeInImage(
                         placeholder: AssetImage('images/loading.gif'),
                         image: NetworkImage(
-                            'https://image.tmdb.org/t/p/w500/${snapshot.data![index].posterPath}'),
+                          'https://image.tmdb.org/t/p/w500/${snapshot.data![index].posterPath}',
+                        ),
                       ),
                     ),
                   ),
@@ -51,7 +58,7 @@ class _PopularMoviesScreenState extends State<PopularMoviesScreen> {
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text("Ocurrio un error"),
+              child: Text('Ocurrio un error'),
             );
           } else {
             return const Center(

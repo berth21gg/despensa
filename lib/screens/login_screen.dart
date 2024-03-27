@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:pmsn2024/screens/dashboard_screen.dart';
 import 'package:pmsn2024/screens/register_screen.dart';
+import 'package:pmsn2024/services/email_auth_firebase.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,21 +12,25 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final authFirebase = EmailAuthFirebase();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-
-  final txtUser = TextFormField(
-    keyboardType: TextInputType.emailAddress,
-    decoration: const InputDecoration(border: OutlineInputBorder()),
-  );
-
-  final pwdUser = TextFormField(
-    keyboardType: TextInputType.text,
-    obscureText: true,
-    decoration: const InputDecoration(border: OutlineInputBorder()),
-  );
 
   @override
   Widget build(BuildContext context) {
+    final txtUser = TextFormField(
+      controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      decoration: const InputDecoration(border: OutlineInputBorder()),
+    );
+
+    final pwdUser = TextFormField(
+      controller: _passwordController,
+      keyboardType: TextInputType.text,
+      obscureText: true,
+      decoration: const InputDecoration(border: OutlineInputBorder()),
+    );
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -72,9 +77,36 @@ class _LoginScreenState extends State<LoginScreen> {
                         setState(() {
                           isLoading = !isLoading;
                         });
+
+                        // authFirebase
+                        //     .signInUser(
+                        //         password: _passwordController.text,
+                        //         email: _emailController.text)
+                        //     .then((value) => {
+                        //           if (!value)
+                        //             {
+                        //               ScaffoldMessenger.of(context)
+                        //                   .showSnackBar(
+                        //                 SnackBar(
+                        //                   content: Text('Login'),
+                        //                   duration: Duration(seconds: 2),
+                        //                 ),
+                        //               )
+                        //             }
+                        //           else
+                        //             {
+                        //               Navigator.pushNamed(context, "/dash")
+                        //                   .then((value) {
+                        //                 setState(() {
+                        //                   isLoading = !isLoading;
+                        //                 });
+                        //               })
+                        //             }
+                        //         });
+
                         Future.delayed(new Duration(milliseconds: 5000), () {
                           /*Navigator.push(
-                              context, 
+                              context,
                               MaterialPageRoute(builder: (context) => new DashboardScreen(),)
                             );*/
                           Navigator.pushNamed(context, "/dash").then((value) {
